@@ -2,8 +2,10 @@
 
 This code is a Paillier Encryption implementation on UDF(s) (mysql user-defined functions).
 
-There are two source codes : the **aggregate UDF** (udf_aggregate.c) and the **non-aggregate UDF** (udf_paillier.c). 
-These two source codes are independent for each other, both are mean for different UDF.
+Mainly, there are two source codes : the **aggregate UDF** (udf_aggregate.c) and the **non-aggregate UDF** (udf_paillier.c). 
+These two source codes are independent for each other, both are mean for different UDF. 
+
+You can ignore the bad-source folder. It only contains experimental source codes that I made previously. Also, we need not to use the CMakefile.txt and cmake-build-debug. I will clean up my repo soon.
 
 ## Requirement
 * GCC compiler
@@ -20,7 +22,6 @@ be found on the website linked above.
 
 To obtain the needed requirement on Ubuntu 15.10, one may run the following
 command:
-
     sudo apt-get install libgmp-dev cmake
 Please refer to the GMP documentation website for further information regarding how to install GMP library.  
 
@@ -57,6 +58,6 @@ The fourth line specify the location of shared objects of our GMP and HCS librar
 Next step, the shared library will be copied and installed under mysql plugin directory
 to be executed inside your database as a UDF.
     
-
+Refer to documentation at official mysql site: [UDF installing](https://dev.mysql.com/doc/refman/8.0/en/udf-compiling.html) for further explaination how to install shared library into use-ready UDF inside mysql database.
 
     
