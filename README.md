@@ -12,8 +12,28 @@ You can ignore the bad-source folder. It only contains experimental source codes
 * CMake 
 
 ## Dependencies
-Before running this UDF source code, we need to settle some dependencies. There are two dependencies : **GMP Library** and **HCS Library**.
+Before running this UDF source code, we need to settle some dependencies. There are mainly three dependencies : **mysql-client**, **GMP Library** and **HCS Library**.
 The following is the step of how to install them in UNIX-based environment.
+
+### Mysql Client API
+MySQL Server and Connector/C installation packages(libmysqlclient-dev) both provide the files needed to build and run MySQL C API client programs.
+The package contains mysql.h file that defines the client API to MySQL and also the ABI of the
+dynamically linked libmysqlclient.
+
+Simply use apt-get :
+
+    $ apt-get install libmysqlclient-dev 
+which will automatically pull the latest libmysqlclient18-dev. 
+
+Or if you use yum :
+
+    yum install mysql-devel -y
+
+All the connector files from the libmysqlclient-dev Ubuntu package usually located at ```/usr/include/mysql/mysql.h```
+(please check your on your computer). This is not a standard search path for compilers, however ```/usr/include is``` 
+
+You'd typically use the mysql.h header in your code like this:
+```#include <mysql/mysql.h>```
 
 ### GMP library
 First, there is a dependency on the [GMP library (link here)](https://gmplib.org/). This also
