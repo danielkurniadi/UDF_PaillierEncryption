@@ -33,13 +33,13 @@ Suppose we have a table with columns of integers (here we call it 'Target Column
     
     result: 240734644527746656466488704360217622599391344833506933214.........
     
-The UDF calls in ```mysql>``` command passes the targeted column and returns the blob values of Paillier aggregate operation as explained just below.
+The UDF calls in ```mysql>``` command passes the targeted column and returns the blob values of Paillier aggregate operation as explained just above.
 
 ### Paillier Non-Aggregate (Additive) Encryption
 This UDF is named ```PaillierAddition(arg1, arg2)```. The calling for the non-aggregate udf is much simpler. It takes **two** INT (integer) value as argument. The the function will encrypt both integer, sum them (the integers encrypted values) together and returns the blob values of the Paillier Additive operation. Just type this command:
 
     mysql> SELECT PaillierAddition(arg1, arg2);
-The UDF calls in ```mysql>``` command passes the two arguments and returns the blob values of Paillier aggregate operation as explained just below.
+The UDF calls in ```mysql>``` command passes the two arguments and returns the blob values of Paillier aggregate operation as explained just above.
 
 ## Tool Requirement
 * Mysql Server
