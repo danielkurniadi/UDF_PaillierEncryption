@@ -5,7 +5,7 @@
 #include <gmp.h>
 #define DeclareAndInit(n) mpz_t n; mpz_init(n)
 
-#include<libhcs.h>
+#include<libpcs.h>
 
 struct CryptoBlock
 {
