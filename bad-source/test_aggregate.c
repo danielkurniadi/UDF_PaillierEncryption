@@ -63,11 +63,11 @@ char *PaillierEncrypt(UDF_INIT *initid __attribute__((unused)), UDF_ARGS *args, 
                       char *is_null, char *error __attribute__((unused))) {
 
     longlong A = (longlong)args->args[0];
-    pcs_public_key *pubKey = pcs_init_public_key();
-    pcs_private_key *privKey = pcs_init_private_key();
+    paillier_public_key *pubKey = paillier_init_public_key();
+    paillier_private_key *privKey = paillier_init_private_key();
     hcs_random *hr = hcs_init_random();
 
-    pcs_generate_key_pair(pubKey, privKey, hr, 2048);
+    paillier_generate_key_pair(pubKey, privKey, hr, 2048);
 
     fprintf(stderr,"Reached init key line\n");
 
@@ -77,7 +77,7 @@ char *PaillierEncrypt(UDF_INIT *initid __attribute__((unused)), UDF_ARGS *args, 
     
     fprintf(stderr,"rm Reached init mpz_t\n");
 
-    pcs_encrypt(pubKey, hr, A_encrypted, A_encrypted);
+    paillier_encrypt(pubKey, hr, A_encrypted, A_encrypted);
 
     fprintf(stderr,"Reached  line\n");
 
@@ -89,8 +89,8 @@ char *PaillierEncrypt(UDF_INIT *initid __attribute__((unused)), UDF_ARGS *args, 
     fprintf(stderr,"res: %s\n",result);
 
     mpz_clear(A_encrypted);
-    pcs_free_public_key(pubKey);
-    pcs_free_private_key(privKey);
+    paillier_free_public_key(pubKey);
+    paillier_free_private_key(privKey);
     hcs_free_random(hr);
     fprintf(stderr,"Clearing\n");
     return result;

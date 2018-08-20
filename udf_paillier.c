@@ -6,7 +6,7 @@
 #define ORDER   -1
 #define DeclareAndInit(n) mpz_t n; mpz_init(n)
 
-#include<libhcs.h>
+#include<libcry.h>
 
 char* PaillierAddition(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigned long *length, char *is_null, char *error);
 my_bool PaillierAddition_init(UDF_INIT *initid, UDF_ARGS *args, char *message);
@@ -23,19 +23,19 @@ char* PaillierAddition(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigned 
     DeclareAndInit(B);
     DeclareAndInit(C);
     
-    pcs_public_key *pubKey = pcs_init_public_key();     // init public key
-    pcs_private_key *privKey = pcs_init_private_key();  // init private key
+    paillier_public_key *pubKey = paillier_init_public_key();     // init public key
+    paillier_private_key *privKey = paillier_init_private_key();  // init private key
     hcs_random *hcsRand = hcs_init_random();            // generate random big int
     
-    pcs_generate_key_pair(pubKey, privKey, hcsRand, 2048);  // generate encryption keypair
+    paillier_generate_key_pair(pubKey, privKey, hcsRand, 2048);  // generate encryption keypair
     
     mpz_set_si(A, A_int);                   // assign cast integer to big integer
     mpz_set_si(B,B_int);
     
-    pcs_encrypt(pubKey, hcsRand, A, A);     // encrypt number
-    pcs_encrypt(pubKey, hcsRand, B, B);
+    paillier_encrypt(pubKey, hcsRand, A, A);     // encrypt number
+    paillier_encrypt(pubKey, hcsRand, B, B);
     
-    pcs_ee_add(pubKey, C, A, B);            // C = E(AxB) ~ a+b
+    paillier_ee_add(pubKey, C, A, B);            // C = E(AxB) ~ a+b
     
     result = mpz_get_str(NULL, 10, C);      // result stored as string
     
@@ -43,8 +43,8 @@ char* PaillierAddition(UDF_INIT *initid, UDF_ARGS *args, char *result, unsigned 
     mpz_clear(B);
     mpz_clear(C);
     
-    pcs_free_public_key(pubKey);    // clear dynamic memory
-    pcs_free_private_key(privKey);
+    paillier_free_public_key(pubKey);    // clear dynamic memory
+    paillier_free_private_key(privKey);
     hcs_free_random(hcsRand);
     
     return result;

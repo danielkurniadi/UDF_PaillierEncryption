@@ -115,8 +115,8 @@ long long udf_paillier(UDF_INIT* initid, UDF_ARGS* args, char* is_null, char *er
 /** Data Structure Declaration */
 struct encrypted_data{
 
-    pcs_public_key *pubKey;
-    pcs_private_key *privKey;
+    paillier_public_key *pubKey;
+    paillier_private_key *privKey;
     hcs_random *hr;
 
     mpz_t e_totalSum;

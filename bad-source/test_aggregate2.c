@@ -110,8 +110,8 @@ my_bool is_const_init(UDF_INIT *initid, UDF_ARGS *args, char *message);
 struct paillier_data {
     ulonglong count;
 
-    pcs_public_key *pubKey;
-    pcs_private_key *privKey;
+    paillier_public_key *pubKey;
+    paillier_private_key *privKey;
     hcs_random *hr;
 
     mpz_t e_totalSum;
@@ -156,12 +156,12 @@ paillier_init(UDF_INIT *initid, UDF_ARGS *args, char *message) {
     }
 
     // initialize data structures
-    data->pubKey = pcs_init_public_key();
-    data->privKey = pcs_init_private_key();
+    data->pubKey = paillier_init_public_key();
+    data->privKey = paillier_init_private_key();
     data->hr = hcs_init_random();
 
     // Generate a key pair with modulus of size 2048 bits
-    pcs_generate_key_pair(data->pubKey, data->privKey, data->hr, 2048);
+    paillier_generate_key_pair(data->pubKey, data->privKey, data->hr, 2048);
 
     initid->ptr = (char *) data;
 
@@ -186,8 +186,8 @@ void paillier_clear(UDF_INIT *initid, char *is_null __attribute__((unused)),
     struct paillier_data *data = (struct paillier_data *) initid->ptr;
 
     mpz_clear(data->e_totalSum);
-    pcs_free_public_key(data->pubKey);
-    pcs_free_private_key(data->privKey);
+    paillier_free_public_key(data->pubKey);
+    paillier_free_private_key(data->privKey);
     hcs_free_random(data->hr);
 
     data->count = 0;
@@ -205,8 +205,8 @@ void paillier_add(UDF_INIT *initid, UDF_ARGS *args,
         mpz_t encrypted;
         mpz_init(encrypted);
         mpz_set_d(encrypted, balance);
-        pcs_encrypt(data->pubKey, data->hr, encrypted, encrypted);
-        pcs_ee_add(data->pubKey, data->e_totalSum, data->e_totalSum, encrypted);
+        paillier_encrypt(data->pubKey, data->hr, encrypted, encrypted);
+        paillier_ee_add(data->pubKey, data->e_totalSum, data->e_totalSum, encrypted);
 
         // clean encrypted, not used anymore
         mpz_clear(encrypted);
@@ -231,7 +231,7 @@ double paillier(UDF_INIT *initid, UDF_ARGS *args __attribute__((unused)),
     mpz_t result;
     mpz_init(result);
 
-    pcs_decrypt(data->privKey, result, data->e_totalSum);
+    paillier_decrypt(data->privKey, result, data->e_totalSum);
     double result_d = mpz_get_d(result);
 
     mpz_clear(result);

@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "libhcs.h": "c"
+        "libhcs.h": "c",
+        "stdio.h": "c"
     }
 }

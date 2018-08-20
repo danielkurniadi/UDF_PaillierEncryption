@@ -80,8 +80,8 @@ my_bool udf_paillier_init(UDF_INIT* initid, UDF_ARGS* args, char* message)
     if ((data = (struct encrypted_data *) malloc(sizeof(struct encrypted_data))) != NULL) {
 
         /* Initialize encryption_data */
-        data->pubKey = pcs_init_public_key();
-        data->privKey = pcs_init_private_key();
+        data->pubKey = paillier_init_public_key();
+        data->privKey = paillier_init_private_key();
         data->hr = hcs_init_random();
 
         initid->ptr = (char *) data; // TODO : Suspected to be the trouble maker!!!!
@@ -107,8 +107,8 @@ void udf_paillier_deinit(UDF_INIT* initid)
 
     mpz_clear(data->e_totalSum);
 
-    pcs_free_public_key(data->pubKey);
-    pcs_free_private_key(data->privKey);
+    paillier_free_public_key(data->pubKey);
+    paillier_free_private_key(data->privKey);
     hcs_free_random(data->hr);
 
     free(initid->ptr);
@@ -223,8 +223,8 @@ void udf_paillier_add(UDF_INIT* initid, UDF_ARGS* args,
 
         fprintf(stderr, "error at _add\n");
 
-        pcs_encrypt(data->pubKey, data->hr, e_balance, e_balance); // Encrypt balance in each row
-        pcs_ee_add(data->pubKey, data->e_totalSum, data->e_totalSum, e_balance); // Summation operation
+        paillier_encrypt(data->pubKey, data->hr, e_balance, e_balance); // Encrypt balance in each row
+        paillier_ee_add(data->pubKey, data->e_totalSum, data->e_totalSum, e_balance); // Summation operation
 
         fprintf(stderr, "error at _ee_add\n");
         mpz_clear(e_balance);   // clean 'e_balance' variable
@@ -262,7 +262,7 @@ long long int udf_paillier(UDF_INIT *initid, UDF_ARGS *args, char *is_null, char
         mpz_t g_result; // initialize 'mpz' type to store result of aggregate sum from decryption
         mpz_init(g_result);
 
-        pcs_decrypt(data->privKey, g_result, data->e_totalSum); //decrypt the result and store to g_result
+        paillier_decrypt(data->privKey, g_result, data->e_totalSum); //decrypt the result and store to g_result
         long long int si_result = mpz_get_si(g_result); // store decryption result back to double type
 
         fprintf (stderr, "Error after getting si_result\n");
